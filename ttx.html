@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./Толстой Лев. Война и мир. Книга 1.js"></script>
+    <script>
+
+        let letters = {}
+        letters['s'] = [
+            ["ц", 50,],
+            ["к", 50,],
+            ["н", 50,],
+            ["г", 50,],
+            ["ш", 50,],
+            ["щ", 50,],
+            ["з", 50,],
+            ["х", 50,],
+            ["ъ", 5,],
+            ["ф", 50,],
+            ["в", 50,],
+            ["п", 50,],
+            ["р", 50,],
+            ["л", 50,],
+            ["д", 50,],
+            ["ж", 50,],
+            ["ч", 50,],
+            ["с", 50,],
+            ["м", 50,],
+            ["т", 50,],
+            ["ь", 5,],
+            ["б", 50,],
+            ["й", 50,],
+        ]
+        letters['g'] = [
+            ["у", 50,],
+            ["е", 50,],
+            ["ы", 50,],
+            ["а", 50,],
+            ["о", 50,],
+            ["э", 50,],
+            ["я", 50,],
+            ["и", 50,],
+            ["ю", 50,],
+        ]
+
+        let len = text.length
+        let mas = {}
+        text.split("").forEach(c => {
+            // console.log(c);
+            if (!mas[c]) mas[c] = 0
+            mas[c]++
+        })
+        console.log(mas);
+
+        for (v of letters['s'])
+            v[1] = mas[v[0]]
+
+        for (v of letters['g'])
+            v[1] = mas[v[0]]
+
+        document.querySelector('body').innerHTML = `letters["s"] = ` + JSON.stringify(letters['s'])
+        document.querySelector('body').innerHTML += `<br><br>letters["g"] = ` + JSON.stringify(letters['g'])
+
+    </script>
+</body>
+
+</html>

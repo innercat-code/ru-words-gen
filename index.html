@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        body {
+            background-color: rgb(92, 101, 131);
+            margin: 20px;
+            text-align: center;
+            font-family: Tahoma;
+            color: #555;
+        }
+
+        .win {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* border: 1px solid #000; */
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100px;
+            /* border: 1px solid #777; */
+            /* box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2); */
+            padding: 10px;
+            margin-top: 10px;
+            /* background-color: #fff; */
+            background: linear-gradient(#fff, #aaa);
+            border-radius: 5px;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            /* background-color: #eee; */
+            background: linear-gradient(#ddd, #fff);
+        }
+
+        .inp {
+            width: 300px;
+            border: 1px solid white;
+            background-color: #fff;
+            margin-top: 30px;
+            padding: 5px;
+            text-align: center;
+            font-size: 20px;
+            color: #555;
+        }
+
+        h1 a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+    <div class="win">
+        <h1><a href="">Словы</a></h1>
+        <span class="btn end" onclick="genAll()" style="width: 100%">Все</span>
+        <br>
+        <span class="btn start" onclick="genStarter()">Начало</span>
+        <span class="btn word" onclick="genWord()">Слово</span>
+        <span class="btn end" onclick="genEnder()">Конец</span>
+        <br>
+        <input type="text" class="inp" onclick="speak()">
+    </div>
+    <script>
+        let letters = {}
+
+        letters["s"] = [["ц", 299], ["к", 2716], ["н", 5336], ["г", 1629], ["ш", 689], ["щ", 242], ["з", 1405], ["х", 637], ["ъ", 24], ["ф", 135], ["в", 3574], ["п", 1793], ["р", 3370], ["л", 3900], ["д", 2115], ["ж", 803], ["ч", 1104], ["с", 4008], ["м", 2159], ["т", 4437], ["ь", 1639], ["б", 1313], ["й", 913]]
+
+        letters["g"] = [["у", 2162], ["е", 6506], ["ы", 1455], ["а", 6756], ["о", 8837], ["э", 191], ["я", 1889], ["и", 5063], ["ю", 557]]
+
+        let starter = [
+            "псевдо",
+            "над",
+            "под",
+            "около",
+            "нано",
+            "мульти",
+            "гомо",
+            "гига",
+        ]
+        let ender = [
+            ["ундер", "-"],
+            ["нейшее", "s"],
+            ["ка", "s"],
+            ["ующее", "s"],
+            ["шная", "g"],
+            ["дутое", "g"],
+            ["йка", "g"],
+            ["стное", "g"],
+        ]
+
+        let win = document.querySelector('.win')
+        let txword = '', txstart = '', txend = ''
+        genWord()
+        function genWord(all) {
+            txword = ''
+            let t = 'g'
+            if (random(0, 10) < 5) t = 's'
+            else t = 'g'
+            for (let i = 0; i < random(4, 10); i++) {
+                // txword += letters[t][random(0, letters[t].length - 1)][0]
+                txword += getLetter(t)
+                if (random(0, 10) < 9)
+                    if (t == 'g') t = 's'
+                    else t = 'g'
+            }
+            if (!all) prn()
+        }
+
+        function getLetter(t) {
+            let max = 0, res = {}
+            for (v of letters[t]) {
+                let r = random(0, 1000 + v[1] * 0.01)
+                if (r > max) {
+                    max = r
+                    res = v
+                }
+            }
+            return res[0]
+        }
+
+        function genStarter(all) {
+            txstart = starter[random(0, starter.length - 1)]
+            if (!all) prn()
+        }
+
+        function genEnder(all) {
+            let t = ''
+            let c = txword.charAt(txword.length - 1)
+            for (v of letters['s'])
+                if (v[0] == c) t = 's'
+            for (v of letters['g'])
+                if (v[0] == c) t = 'g'
+            let mas = []
+            for (v of ender)
+                if (t == v[1]) mas.push(v)
+            txend = mas[random(0, mas.length - 1)][0]
+            if (!all) prn()
+        }
+
+        function genAll() {
+            genWord(true)
+            genStarter(true)
+            genEnder(true)
+            prn()
+        }
+
+        function prn() {
+            let str = txstart + txword + txend
+            str = str.charAt(0).toUpperCase() + str.slice(1)
+            document.querySelector('.inp').value = str
+            speak()
+        }
+
+        function speak() {
+            const synth = window.speechSynthesis
+            synth.speak(new SpeechSynthesisUtterance(document.querySelector('.inp').value))
+        }
+
+        function random(min, max) {
+            if (min !== undefined && max !== undefined) return Math.floor(Math.random() * (max - min + 1)) + min;
+            else if (Math.random() >= 0.5) return true
+            else return false
+        }
+
+    </script>
+</body>
+
+</html>
